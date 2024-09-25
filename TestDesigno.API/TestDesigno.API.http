@@ -1,0 +1,6 @@
+@TestDesigno.API_HostAddress = http://localhost:5005
+
+GET {{TestDesigno.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

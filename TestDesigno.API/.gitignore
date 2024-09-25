@@ -1,0 +1,43 @@
+﻿# Ignore build results
+[Bb]in/
+[Oo]bj/
+
+# NuGet Packages
+*.nupkg
+# NuGet Symbol Packages
+*.snupkg
+
+# The Visual Studio Code user-specific files
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+*.tlog
+*.vspscc
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# ASP.NET Core Secrets
+secrets.json
+
+# DotNet Core specific files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Entity Framework
+Migrations/
+
+# Visual Studio Code specific files
+.vscode/
+
+# Local history for Visual Studio (Backup history of project changes)
+.vs/
