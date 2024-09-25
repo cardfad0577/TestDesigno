@@ -1,6 +1,0 @@
-@TestDesigno.WEB_HostAddress = http://localhost:5224
-
-GET {{TestDesigno.WEB_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
