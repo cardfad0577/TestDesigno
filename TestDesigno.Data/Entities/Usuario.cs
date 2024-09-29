@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TestDesigno.Data.Entities
+namespace TestDesigno.Data.Entities;
+
+public partial class Usuario
 {
-    public class Usuario
-    {
-        public Guid UsuarioId { get; set; } = Guid.NewGuid();
-        public required string PrimerNombre { get; set; }
-        public string? SegundoNombre { get; set; }
-        public required string PrimerApellido { get; set; }
-        public string? SegundoApellido { get; set; }
-        public DateTime FechaNacimiento { get; set; }
-        public decimal Sueldo { get; set; }
-        public DateTime FechaCreacion { get; set; } = DateTime.Now;
-        public DateTime FechaModificacion { get; set; } = DateTime.Now;
-    }
+    public Guid UsuarioId { get; set; }
+
+    public string PrimerNombre { get; set; } = null!;
+
+    public string? SegundoNombre { get; set; }
+
+    public string PrimerApellido { get; set; } = null!;
+
+    public string? SegundoApellido { get; set; }
+
+    public DateOnly FechaNacimiento { get; set; }
+
+    public int Sueldo { get; set; }
+
+    public DateTime FechaCreacion { get; set; }
+
+    public DateTime FechaModificacion { get; set; }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TestDesigno.Core.Dtos;
 using TestDesigno.Core.Interfaces;
 using TestDesigno.Data.Entities;
+
 
 namespace TestDesigno.API.Controllers
 {
@@ -20,10 +22,21 @@ namespace TestDesigno.API.Controllers
         /// <returns>El resultado de la creación.</returns>
         [Route("saveUser")]
         [HttpPost]
-        public async Task<IActionResult> saveUser([FromBody] Usuario dtoUser)
+        public async Task<IActionResult> saveUser([FromBody] UsuarioDto dtoUser)
         {
-            await _userSVC.saveUser(dtoUser);
-            return CreatedAtAction(nameof(updateUser), new { id = dtoUser.UsuarioId }, dtoUser);
+            try
+            {
+                if (dtoUser.Sueldo <= 0)
+                {
+                    return BadRequest("El sueldo no debe ser cero o negativo.");
+                }
+                await _userSVC.saveUser(dtoUser);
+                return Ok("Successful");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -33,7 +46,7 @@ namespace TestDesigno.API.Controllers
         /// <returns>Un resultado indicando el estado de la operación.</returns>
         [Route("updateUser")]
         [HttpPut]
-        public async Task<IActionResult> updateUser([FromBody] Usuario dtoUser)
+        public async Task<IActionResult> updateUser([FromBody] UsuarioDto dtoUser)
         {
             await _userSVC.updateUser(dtoUser);
             return NoContent();
@@ -48,8 +61,17 @@ namespace TestDesigno.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> deleteUser(Guid userId)
         {
-            await _userSVC.deleteUser(userId);
-            return NoContent();
+            try
+            {
+                var res = await _userSVC.deleteUser(userId);
+                if (res == null)
+                    return NoContent();
+                return Ok("Successful");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -59,14 +81,20 @@ namespace TestDesigno.API.Controllers
         /// <returns>El usuario encontrado.</returns>
         [Route("getUserById")]
         [HttpGet]
-        public async Task<ActionResult<Usuario>> getUserById(Guid userId)
+        public async Task<ActionResult<UsuarioDto>> getUserById(Guid userId)
         {
-            var usuario = await _userSVC.getUserById(userId);
-            if (usuario == null)
+            try
             {
-                return NotFound();
+                var usuario = await _userSVC.getUserById(userId);
+                if (usuario == null)
+                    return NoContent();
+
+                return Ok(usuario);
             }
-            return Ok(usuario);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -79,7 +107,7 @@ namespace TestDesigno.API.Controllers
         /// <returns>Una lista de usuarios encontrados.</returns>
         [Route("getUsers")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> getUsers(string primerNombre, string primerApellido, int numeroPagina = 1, int tamanioPagina = 10)
+        public async Task<ActionResult<IEnumerable<UsuarioDto>>> getUsers(string primerNombre, string primerApellido, int numeroPagina = 1, int tamanioPagina = 10)
         {
             var usuarios = await _userSVC.getUsers(primerNombre, primerApellido, numeroPagina, tamanioPagina);
             return Ok(usuarios);

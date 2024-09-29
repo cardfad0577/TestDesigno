@@ -1,5 +1,5 @@
 ﻿
-using TestDesigno.Data.Entities;
+using TestDesigno.Core.Dtos;
 
 namespace TestDesigno.Core.Interfaces
 {
@@ -8,30 +8,30 @@ namespace TestDesigno.Core.Interfaces
         /// <summary>
         /// Crea un nuevo usuario.
         /// </summary>
-        /// <param name="dtoUser">El usuario a crear.</param>
+        /// <param name="obj">El usuario a crear.</param>
         /// <returns>Un Task que representa la operación asíncrona.</returns>
-        Task saveUser(Usuario dtoUser);
+        Task saveUser(UsuarioDto obj);
 
         /// <summary>
         /// Elimina un usuario por su ID.
         /// </summary>
         /// <param name="userId">El ID del usuario a eliminar.</param>
         /// <returns>Un Task que representa la operación asíncrona.</returns>
-        Task deleteUser(Guid userId);
+        Task<object> deleteUser(Guid userId);
 
         /// <summary>
         /// Actualiza un usuario existente.
         /// </summary>
-        /// <param name="dtoUser">El usuario con los datos actualizados.</param>
+        /// <param name="obj">El usuario con los datos actualizados.</param>
         /// <returns>Un Task que representa la operación asíncrona.</returns>
-        Task updateUser(Usuario dtoUser);
+        Task updateUser(UsuarioDto obj);
 
         /// <summary>
         /// Obtiene un usuario por su ID.
         /// </summary>
         /// <param name="userId">El ID del usuario a buscar.</param>
         /// <returns>El usuario encontrado.</returns>
-        Task<Usuario> getUserById(Guid userId);
+        Task<UsuarioDto> getUserById(Guid userId);
 
         /// <summary>
         /// Busca usuarios por primer nombre o primer apellido con paginación.
@@ -41,6 +41,6 @@ namespace TestDesigno.Core.Interfaces
         /// <param name="numPage">El número de la página a obtener.</param>
         /// <param name="szPages">La cantidad de registros a traer por página.</param>
         /// <returns>Una lista de usuarios encontrados.</returns>
-        Task<IEnumerable<Usuario>> getUsers(string fName, string lName, int numPage, int szPage);
+        Task<IEnumerable<UsuarioDto>> getUsers(string fName, string lName, int numPage, int szPage);
     }
 }

@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TestDesigno.Data.Model;
+using TestDesigno.Core.Interfaces;
+using TestDesigno.Core.Services;
+using TestDesigno.Data.DAOs;
+using TestDesigno.Data.Models;
+using TestDesigno.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,9 @@ builder.Services.AddDbContext<TestDesignoContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddTransient<IUsuariosSVC, UsuariosSVC>();
+builder.Services.AddTransient<IUsuariosRepository, UsuariosDao>();
 
 var app = builder.Build();
 
