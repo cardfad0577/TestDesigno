@@ -35,7 +35,7 @@ namespace TestDesigno.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaNacimiento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("PrimerApellido")
                         .IsRequired()
@@ -52,7 +52,7 @@ namespace TestDesigno.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Sueldo")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("int");
 
                     b.HasKey("UsuarioId");
 

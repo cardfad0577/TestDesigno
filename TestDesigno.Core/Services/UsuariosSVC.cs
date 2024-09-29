@@ -36,6 +36,7 @@ namespace TestDesigno.Core.Services
                     SegundoApellido = obj.SegundoApellido,
                     Sueldo = obj.Sueldo,
                     FechaCreacion = DateTime.Now,
+                    FechaModificacion = DateTime.Now
                 };
 
                 await _usuarioRepository.saveUser(objUsuario);

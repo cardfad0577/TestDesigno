@@ -20,8 +20,8 @@ namespace TestDesigno.Data.Migrations
                     SegundoNombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PrimerApellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SegundoApellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Sueldo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "date", nullable: false),
+                    Sueldo = table.Column<decimal>(type: "int", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
