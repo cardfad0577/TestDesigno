@@ -24,7 +24,7 @@ namespace TestDesigno.Core.Interfaces
         /// </summary>
         /// <param name="obj">El usuario con los datos actualizados.</param>
         /// <returns>Un Task que representa la operación asíncrona.</returns>
-        Task updateUser(UsuarioDto obj);
+        Task<object> updateUser(UsuarioDto obj);
 
         /// <summary>
         /// Obtiene un usuario por su ID.

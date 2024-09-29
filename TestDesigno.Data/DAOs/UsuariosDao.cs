@@ -46,9 +46,28 @@ namespace TestDesigno.Data.DAOs
             }
         }
 
-        public Task<IEnumerable<Usuario>> getUsers(string fName, string lName, int numPage, int szPage)
+        async public Task<IEnumerable<Usuario>> getUsers(string fName, string lName, int numPage, int szPage)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = _context.Usuarios.AsQueryable();
+
+                if (!string.IsNullOrEmpty(fName))
+                    query = query.Where(u => u.PrimerNombre.Contains(fName));
+
+                if (!string.IsNullOrEmpty(lName))
+                    query = query.Where(u => u.PrimerApellido.Contains(lName));
+
+                query = query.OrderBy(u => u.FechaCreacion);
+
+                query = query.Skip((numPage - 1) * szPage).Take(szPage);
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error DAO - GU: " + ex.Message);
+            }
         }
 
         async public Task saveUser(Usuario dtoUser)
@@ -64,9 +83,27 @@ namespace TestDesigno.Data.DAOs
             }
         }
 
-        public Task updateUser(Usuario dtoUser)
+        async public Task updateUser(Usuario dtoUser)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingUser = await _context.Usuarios.FindAsync(dtoUser.UsuarioId);
+
+                existingUser.PrimerNombre = dtoUser.PrimerNombre;
+                existingUser.SegundoNombre = dtoUser.SegundoNombre;
+                existingUser.PrimerApellido = dtoUser.PrimerApellido;
+                existingUser.SegundoApellido = dtoUser.SegundoApellido;
+                existingUser.FechaNacimiento = dtoUser.FechaNacimiento;
+                existingUser.Sueldo = dtoUser.Sueldo;
+                existingUser.FechaModificacion = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error DAO - UU: " + ex.Message);
+            }
         }
     }
 }

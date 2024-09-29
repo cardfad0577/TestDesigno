@@ -28,7 +28,7 @@ namespace TestDesigno.Core.Services
 
                 Usuario objUsuario = new()
                 {
-                    UsuarioId = obj.UsuarioId,
+                    UsuarioId = Guid.NewGuid(),
                     PrimerNombre = obj.PrimerNombre,
                     SegundoNombre = obj.SegundoNombre,
                     FechaNacimiento = DateOnly.FromDateTime(obj.FechaNacimiento),
@@ -90,29 +90,57 @@ namespace TestDesigno.Core.Services
             }
         }
 
-        public Task<IEnumerable<UsuarioDto>> getUsers(string fName, string lName, int numPage, int szPage)
-        {
-            throw new NotImplementedException();
-        }
-
-        async public Task updateUser(UsuarioDto obj)
+        async public Task<IEnumerable<UsuarioDto>> getUsers(string fName, string lName, int numPage, int szPage)
         {
             try
             {
+                var usuarios = await _usuarioRepository.getUsers(fName, lName, numPage, szPage);
+
+                if (usuarios == null || !usuarios.Any())
+                    return Enumerable.Empty<UsuarioDto>();
+
+                return usuarios.Select(usuario => new UsuarioDto
+                {
+                    UsuarioId = usuario.UsuarioId,
+                    PrimerNombre = usuario.PrimerNombre,
+                    SegundoNombre = usuario.SegundoNombre,
+                    PrimerApellido = usuario.PrimerApellido,
+                    SegundoApellido = usuario.SegundoApellido,
+                    FechaNacimiento = usuario.FechaNacimiento.ToDateTime(TimeOnly.MinValue),
+                    Sueldo = usuario.Sueldo,
+                    FechaCreacion = usuario.FechaCreacion,
+                    FechaModificacion = usuario.FechaModificacion
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error SVC - GUS: " + ex.Message);
+            }
+        }
+
+        async public Task<object> updateUser(UsuarioDto obj)
+        {
+            try
+            {
+
+                var usuario = await _usuarioRepository.getUserById((Guid)obj.UsuarioId);
+                if (usuario == null)
+                    return null;
+
                 Usuario objUsuario = new()
                 {
-                    UsuarioId = obj.UsuarioId,
+                    UsuarioId = (Guid)obj.UsuarioId,
                     PrimerNombre = obj.PrimerNombre,
                     SegundoNombre = obj.SegundoNombre,
                     PrimerApellido = obj.PrimerApellido,
                     SegundoApellido = obj.SegundoApellido,
                     FechaNacimiento = DateOnly.FromDateTime(obj.FechaNacimiento),
                     Sueldo = obj.Sueldo,
-                    FechaCreacion = obj.FechaCreacion,
                     FechaModificacion = obj.FechaModificacion
                 };
 
                 await _usuarioRepository.updateUser(objUsuario);
+                return true;
             }
             catch (Exception ex)
             {

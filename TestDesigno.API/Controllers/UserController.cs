@@ -26,10 +26,9 @@ namespace TestDesigno.API.Controllers
         {
             try
             {
-                if (dtoUser.Sueldo <= 0)
-                {
-                    return BadRequest("El sueldo no debe ser cero o negativo.");
-                }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
                 await _userSVC.saveUser(dtoUser);
                 return Ok("Successful");
             }
@@ -48,8 +47,20 @@ namespace TestDesigno.API.Controllers
         [HttpPut]
         public async Task<IActionResult> updateUser([FromBody] UsuarioDto dtoUser)
         {
-            await _userSVC.updateUser(dtoUser);
-            return NoContent();
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var res = await _userSVC.updateUser(dtoUser);
+                if (res == null)
+                    return NoContent();
+                return Ok("Successful");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -109,8 +120,15 @@ namespace TestDesigno.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioDto>>> getUsers(string primerNombre, string primerApellido, int numeroPagina = 1, int tamanioPagina = 10)
         {
-            var usuarios = await _userSVC.getUsers(primerNombre, primerApellido, numeroPagina, tamanioPagina);
-            return Ok(usuarios);
+            try
+            {
+                var usuarios = await _userSVC.getUsers(primerNombre, primerApellido, numeroPagina, tamanioPagina);
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
